@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagan — Ship Your Weekend Project</title>
+<meta name="description" content="We finish the AI projects you started on the weekend. For home services and pro services owners who want their team to actually use the tools.">
+
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEVMaXEJOj4WZI4JOz8JOj4hmP8JOj4IPEAJOj4JOj4hl/8JPEAhl/8JOj8hl/8gmP8JOz8hl/8JOkAhl/8JOj4hl/+U+0IzAAAAFHRSTlMA7xDPZ8aGIJ/fmEXmr3Qov0AwYKDDniQAAAAJcEhZcwAACxMAAAsTAQCanBgAAAJdSURBVHjatVfnmoMgEAy9Kxbe/1XP0OSiKMS7/ZPkizvONth5vSrGMDVIrJsJa6hiry5T1LuWhqhq9YZH72ACsyZ3sFZN0FsIXLgDZPhmFoGSxQ0ASs685DtjnsMS1ySYf5s9SZjiCfuaBF5XXnkHSxC04ho+rvLETEDg59F/UBsHKYnWhMhh/Ewyggf/jR6Y95+T1K4wLadEQpxzoD7BCXci7mBkiY2CzvKAS9jxxN1DjJnsZvhYPBR+DNrVbCiaBZTJFnsAULoLk+EZ/7z9CCAgQuIujcCdcQ4iJBa3+CeE8EpYVsD4r9LdmvQP2qISgYAPYHAN5jPJCgo4V3Bs8Xd6zLWkewk8AdIE4EimIPyYZgKLa7QpZ0GlFKoOApGCSjGgRGVyrosCCI4sRyDbAWROIwtMfBPpdgCdq4dDCubmGkYbUx3o631IgeYm+tVMwDewTXMsewBkmmrk28h2FTEX0vgy5CL0A/gy7AC6B0D/B8C3IYh0mMhuAOuTiJ6W8XEj0XScdLfyHFoZPxsm9XycfRnANweKiOl/fKSpfM81U1hyBOovjvUQQ7hYdHMNA4FwvULw7dWWVka63/bNl6sp1xwIvrve95316YIR77neFUdUl6z6CFSXrMdrXqxE3mCXs0Vzulo0E2xObHXVjQk4rtsRuBAD27JN3su2LJftODzobF2PasDcyiK6clj5I6qBquCgv5TFheLiZ5LHpvG9Uky7tOJ4LmUsD9jgXvaJUvbZt+wzpewzt8KT1XSrh6SwQbsyXJO+Te5RfKOjd7P4jjxUlv/I0Lrs/gFI279CltbATQAAAABJRU5ErkJggg==">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'Space Grotesk', 'system-ui', 'sans-serif'],
+        mono: ['Fragment Mono', 'ui-monospace', 'monospace'],
+        serif: ['Instrument Serif', 'Georgia', 'serif'],
+      },
+      colors: {
+        paper: {
+          50:  '#ede9e5',
+          100: '#e6e1dc',
+          200: '#dbd7d1',
+          300: '#cac1b4',
+        },
+        ink: {
+          950: '#041f21',
+          900: '#062e31',
+          800: '#093a3e',
+          700: '#0f5559',
+          600: '#197076',
+          500: '#9e988f',
+          400: '#cac1b4',
+          300: '#dbd7d1',
+        },
+        rust: {
+          400: '#f7c533',
+          500: '#f5b801',
+          600: '#d9a300',
+          700: '#b58c00',
+        },
+      },
+      letterSpacing: { tightest: '-0.045em' },
+    }
+  }
+}
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "ss01", "cv11"; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee { animation: marquee 45s linear infinite; }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
+  .blink { animation: blink 1s step-end infinite; }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50%      { opacity: 1;    transform: scale(1.55); }
+  }
+  .breathe { animation: breathe 2.2s ease-in-out infinite; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+  .float-1 { animation: float 5s ease-in-out infinite; }
+  .float-2 { animation: float 5.5s ease-in-out infinite 0.8s; }
+  .float-3 { animation: float 5s ease-in-out infinite 1.6s; }
+
+  @keyframes march { to { stroke-dashoffset: -1000; } }
+  .dash-line {
+    stroke-dasharray: 4 6;
+    animation: march 28s linear infinite;
+  }
+
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.055;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.on { opacity: 1; transform: translateY(0); }
+  .delay-1.on { transition-delay: .08s; }
+  .delay-2.on { transition-delay: .16s; }
+  .delay-3.on { transition-delay: .24s; }
+  .delay-4.on { transition-delay: .32s; }
+
+  .btn {
+    transition:
+      transform .25s cubic-bezier(.16,1,.3,1),
+      background .25s ease,
+      color .25s ease,
+      border-color .25s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0) scale(0.985); }
+
+  ::selection { background: #093a3e; color: #ede9e5; }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid rgba(4,31,33,0.08);
+    box-shadow:
+      0 1px 0 rgba(4,31,33,0.02),
+      0 24px 48px -24px rgba(2,59,53,0.10);
+  }
+  .card-dark {
+    background: #041f21;
+    border: 1px solid rgba(247,247,245,0.08);
+    box-shadow: inset 0 1px 0 rgba(247,247,245,0.04);
+  }
+
+  .display { letter-spacing: -0.045em; }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Waitlist modal */
+  .waitlist-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+  .waitlist-modal.is-open { display: flex; }
+  .waitlist-modal .backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 28, 24, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: wlFade .25s ease-out;
+  }
+  .waitlist-modal .panel {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid rgba(4,31,33,0.08);
+    border-radius: 28px;
+    box-shadow:
+      0 1px 0 rgba(4,31,33,0.02),
+      0 60px 120px -40px rgba(4,31,33,0.45);
+    width: 100%;
+    max-width: 540px;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    animation: wlRise .35s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes wlFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes wlRise {
+    from { opacity: 0; transform: translateY(18px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .wl-input,
+  .wl-select,
+  .wl-textarea {
+    width: 100%;
+    background: #ede9e5;
+    border: 1px solid rgba(1,28,24,0.18);
+    border-radius: 12px;
+    padding: 0 16px;
+    font-family: 'Plus Jakarta Sans', 'Space Grotesk', system-ui, sans-serif;
+    font-size: 14px;
+    color: #041f21;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .wl-input,
+  .wl-select { height: 48px; }
+  .wl-textarea {
+    padding: 12px 16px;
+    resize: none;
+    line-height: 1.5;
+  }
+  .wl-input:focus,
+  .wl-select:focus,
+  .wl-textarea:focus {
+    outline: none;
+    border-color: rgba(4,31,33,0.7);
+    background: #fff;
+  }
+  .wl-label {
+    display: block;
+    font-family: 'Fragment Mono', ui-monospace, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #737373;
+    margin-bottom: 6px;
+  }
+  body.wl-locked { overflow: hidden; }
+
+  /* Rate card details disclosure */
+  details.rate-details > summary {
+    list-style: none;
+    cursor: pointer;
+    outline: none;
+  }
+  details.rate-details > summary::-webkit-details-marker { display: none; }
+  details.rate-details > summary::marker { display: none; }
+  details.rate-details > summary .chevron {
+    transition: transform 220ms ease;
+  }
+  details.rate-details[open] > summary .chevron {
+    transform: rotate(90deg);
+  }
+  details.rate-details[open] > summary .summary-label-closed { display: none; }
+  details.rate-details:not([open]) > summary .summary-label-open { display: none; }
+  details.rate-details > .details-body {
+    animation: detailsOpen 380ms ease-out;
+  }
+  @keyframes detailsOpen {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body class="bg-paper-50 text-ink-950 font-sans antialiased grain">
+
+<!-- ============================ NAV ============================ -->
+<nav class="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-paper-50/75 border-b border-ink-950/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2.5">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEVMaXEJOj4WZI4JOz8JOj4hmP8JOj4IPEAJOj4JOj4hl/8JPEAhl/8JOj8hl/8gmP8JOz8hl/8JOkAhl/8JOj4hl/+U+0IzAAAAFHRSTlMA7xDPZ8aGIJ/fmEXmr3Qov0AwYKDDniQAAAAJcEhZcwAACxMAAAsTAQCanBgAAAJdSURBVHjatVfnmoMgEAy9Kxbe/1XP0OSiKMS7/ZPkizvONth5vSrGMDVIrJsJa6hiry5T1LuWhqhq9YZH72ACsyZ3sFZN0FsIXLgDZPhmFoGSxQ0ASs685DtjnsMS1ySYf5s9SZjiCfuaBF5XXnkHSxC04ho+rvLETEDg59F/UBsHKYnWhMhh/Ewyggf/jR6Y95+T1K4wLadEQpxzoD7BCXci7mBkiY2CzvKAS9jxxN1DjJnsZvhYPBR+DNrVbCiaBZTJFnsAULoLk+EZ/7z9CCAgQuIujcCdcQ4iJBa3+CeE8EpYVsD4r9LdmvQP2qISgYAPYHAN5jPJCgo4V3Bs8Xd6zLWkewk8AdIE4EimIPyYZgKLa7QpZ0GlFKoOApGCSjGgRGVyrosCCI4sRyDbAWROIwtMfBPpdgCdq4dDCubmGkYbUx3o631IgeYm+tVMwDewTXMsewBkmmrk28h2FTEX0vgy5CL0A/gy7AC6B0D/B8C3IYh0mMhuAOuTiJ6W8XEj0XScdLfyHFoZPxsm9XycfRnANweKiOl/fKSpfM81U1hyBOovjvUQQ7hYdHMNA4FwvULw7dWWVka63/bNl6sp1xwIvrve95316YIR77neFUdUl6z6CFSXrMdrXqxE3mCXs0Vzulo0E2xObHXVjQk4rtsRuBAD27JN3su2LJftODzobF2PasDcyiK6clj5I6qBquCgv5TFheLiZ5LHpvG9Uky7tOJ4LmUsD9jgXvaJUvbZt+wzpewzt8KT1XSrh6SwQbsyXJO+Te5RfKOjd7P4jjxUlv/I0Lrs/gFI279CltbATQAAAABJRU5ErkJggg==" alt="Sagan" class="w-7 h-7" width="28" height="28">
+      <span class="font-medium tracking-tight text-[15px]">Sagan</span>
+      <span class="hidden sm:inline text-[10px] font-mono text-ink-500 border-l border-ink-950/15 pl-2.5 ml-1 uppercase tracking-widest">AI Agents · Real Business</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-[13px] text-ink-700">
+      <a href="#how"     class="hover:text-ink-950 transition-colors">How it works</a>
+      <a href="#real"    class="hover:text-ink-950 transition-colors">Real builds</a>
+      <a href="#for"     class="hover:text-ink-950 transition-colors">Who it's for</a>
+      <a href="#pricing" class="hover:text-ink-950 transition-colors">Pricing</a>
+    </div>
+    <a href="#waitlist" data-open-waitlist class="btn inline-flex items-center gap-1.5 bg-ink-950 text-paper-50 px-4 h-9 rounded-full text-[13px] font-medium">
+      Join the waitlist
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<section class="pt-32 md:pt-40 pb-16 md:pb-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-14 lg:gap-20 items-start">
+
+      <!-- LEFT: Headline -->
+      <div class="reveal on">
+        <div class="inline-flex items-center gap-2 border border-ink-950/15 rounded-full px-3 py-1.5 text-[11px] font-mono tracking-widest uppercase text-ink-700 mb-10">
+          <span class="w-1.5 h-1.5 rounded-full bg-rust-500 breathe"></span>
+          For owners, not engineers
+        </div>
+
+        <h1 class="display text-[60px] sm:text-[88px] lg:text-[112px] leading-[0.86] font-medium text-ink-950">
+          Ship your<br>
+          <span class="font-serif italic font-normal">weekend</span><br>
+          project.
+        </h1>
+
+        <p class="mt-10 text-[19px] lg:text-[21px] text-ink-800 max-w-[52ch] leading-relaxed">
+          You're running a real business, not a software startup. You know your team needs dozens of AI agents you'll never have time to build yourself. That's where we come in.
+        </p>
+        <p class="mt-5 text-[16px] text-ink-600 max-w-[52ch] leading-relaxed">
+          You spent the weekend building in Claude Code or Lovable. It's 80% done and stuck on your bench. Send us the work order. Our crew finishes the job, tests it, and keeps it running.
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row gap-3">
+          <a href="#waitlist" data-open-waitlist class="btn inline-flex items-center gap-2 bg-ink-950 text-paper-50 px-6 h-12 rounded-full text-[14px] font-medium">
+            Join the waitlist
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="mt-14 pt-8 border-t border-ink-950/10 max-w-[480px]">
+          <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-2">Members only</div>
+          <p class="text-[15px] text-ink-700 leading-relaxed">
+            The factory floor is reserved for Sagan members.
+            <a href="https://getsagan.com" target="_blank" rel="noopener" class="text-ink-950 font-medium underline decoration-rust-500 decoration-2 underline-offset-4 hover:decoration-rust-600">
+              Join Sagan at getsagan.com →
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Live project status card -->
+      <div class="relative reveal on delay-2">
+        <div class="card rounded-[28px] p-6 lg:p-7 relative overflow-hidden">
+
+          <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background-image:linear-gradient(#041f21 1px,transparent 1px),linear-gradient(90deg,#041f21 1px,transparent 1px);background-size:24px 24px;"></div>
+
+          <div class="flex items-center justify-between mb-5 relative">
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-rust-500 breathe"></div>
+              <span class="text-[10px] font-mono uppercase tracking-widest text-ink-700">build · 02847</span>
+            </div>
+            <span class="text-[10px] font-mono text-ink-500">SAGAN · LIVE</span>
+          </div>
+
+          <div class="mb-7 relative">
+            <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-1.5">Member · Landscape irrigation</div>
+            <div class="text-[22px] font-medium tracking-tight text-ink-950">RPZ backflow filer</div>
+            <div class="text-[13px] text-ink-600 mt-1.5 leading-relaxed">Watches every backflow test in ServiceTitan. Files with 30 municipalities by PDF, email, or portal. Drops the receipt back on the customer's record.</div>
+          </div>
+
+          <div class="space-y-3 mb-6 relative">
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 rounded-full bg-ink-950 flex items-center justify-center shrink-0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 text-[13px] text-ink-950">Brief from member</div>
+              <div class="text-[10px] font-mono text-ink-500">Step 01</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 rounded-full bg-ink-950 flex items-center justify-center shrink-0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 text-[13px] text-ink-950">Spec drafted &amp; approved</div>
+              <div class="text-[10px] font-mono text-ink-500">Step 02</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 rounded-full bg-ink-950 flex items-center justify-center shrink-0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 text-[13px] text-ink-950">Built &amp; tested against all 30 municipalities</div>
+              <div class="text-[10px] font-mono text-ink-500">Step 03</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 rounded-full bg-ink-950 flex items-center justify-center shrink-0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 text-[13px] text-ink-950">Member walkthrough &amp; sign-off</div>
+              <div class="text-[10px] font-mono text-ink-500">Step 04</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 rounded-full bg-rust-500 flex items-center justify-center shrink-0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 text-[13px] text-ink-950 font-medium">Live in production</div>
+              <div class="text-[10px] font-mono text-rust-500">Step 05</div>
+            </div>
+          </div>
+
+          <div class="border-t border-ink-950/10 pt-5 flex items-center justify-between relative">
+            <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest">Total build time</div>
+            <div class="text-[15px] font-mono font-medium text-ink-950">7.5 hours</div>
+          </div>
+        </div>
+
+        <div class="absolute -top-3 -right-3 bg-rust-500 text-paper-50 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full float-1 shadow-[0_12px_28px_-8px_rgba(240,180,41,0.45)]">
+          shipped
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MARQUEE ============================ -->
+<section class="border-y border-ink-950/10 bg-ink-950 text-paper-50 overflow-hidden py-7">
+  <div class="marquee flex whitespace-nowrap">
+    <div class="flex items-center gap-8 pr-8 shrink-0">
+      <span class="text-[44px] md:text-[60px] font-medium display">Ship your weekend project</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+      <span class="text-[44px] md:text-[60px] font-serif italic">off the factory floor</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+      <span class="text-[44px] md:text-[60px] font-medium display">for owners, not engineers</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+      <span class="text-[44px] md:text-[60px] font-serif italic">for real business owners, not tech startups</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+    </div>
+    <div class="flex items-center gap-8 pr-8 shrink-0" aria-hidden="true">
+      <span class="text-[44px] md:text-[60px] font-medium display">Ship your weekend project</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+      <span class="text-[44px] md:text-[60px] font-serif italic">for real business owners, not tech startups</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+      <span class="text-[44px] md:text-[60px] font-medium display">for owners, not engineers</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b801" class="shrink-0"><path d="M12 2L22 12L12 22L2 12Z"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ AGITATION ============================ -->
+<section class="py-24 md:py-36">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5 lg:sticky lg:top-32 self-start reveal">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-ink-500 mb-5">Sound familiar?</div>
+        <h2 class="display text-[44px] lg:text-[68px] leading-[0.92] font-medium text-ink-950">
+          You're the only<br>
+          person at your<br>
+          company who sees<br>
+          <span class="font-serif italic font-normal text-ink-700">what is possible.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 space-y-7 text-[17px] text-ink-700 leading-relaxed reveal delay-2">
+        <p>You run a roofing company. Or a CPA firm. Or a landscaping crew. You already run a real business. Trucks, timesheets, walkthroughs, punch lists. You know how to ship work.</p>
+        <p>You've bookmarked a hundred tutorials. You stay up building Lovable prototypes at 11pm after the kids are in bed. You've hit <code class="font-mono text-[13px] bg-ink-950/5 px-2 py-0.5 rounded border border-ink-950/10 text-rust-600">--dangerously-skip-permissions</code> and meant it. You're miles ahead of your competitors — they don't even know what Claude Code is.</p>
+        <p>But there are three half-built projects sitting on your bench. The login page won't work. The database keeps breaking. You'd never show any of this to your crew. The last 20% is where the real work hides, and no smarter AI is going to fix it for you.</p>
+        <div class="pt-6 border-t border-ink-950/10">
+          <div class="text-[10px] font-mono uppercase tracking-widest text-ink-500 mb-2">So here's the problem</div>
+          <div class="text-[22px] lg:text-[26px] font-medium text-ink-950 tracking-tight leading-tight">You've got the blueprints. You don't have the crew. And a $20,000 dev shop is overkill for a tool your ops team needs as soon as possible.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THE CONVEYOR BELT ============================ -->
+<section id="how" class="py-24 md:py-36 bg-ink-950 text-paper-50 relative overflow-hidden">
+  <div class="absolute top-10 right-10 text-[10px] font-mono uppercase tracking-widest text-paper-300/40 hidden lg:block">
+    How it works
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-end justify-between mb-20 flex-wrap gap-8 reveal">
+      <div>
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-5">The factory</div>
+        <h2 class="display text-[44px] lg:text-[76px] leading-[0.9] font-medium max-w-[14ch]">
+          Not a dev shop.<br>
+          <span class="font-serif italic font-normal text-paper-300">A factory.</span>
+        </h2>
+      </div>
+      <p class="max-w-[44ch] text-[15px] text-paper-200 leading-relaxed">
+        Drop off a work order. Record a walkthrough of what you want. Or book a 15-minute call. Your job moves through five stations on our line. You decide how fast it goes.
+      </p>
+    </div>
+
+    <div class="relative reveal delay-1">
+      <svg class="hidden md:block absolute top-[40px] left-[5%] right-[5%] w-[90%] h-6 text-rust-500/40 pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1000 24">
+        <line class="dash-line" x1="20" y1="12" x2="980" y2="12" stroke="currentColor" stroke-width="2"/>
+      </svg>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-4 relative">
+        <!-- stage 01 -->
+        <div>
+          <div class="w-20 h-20 rounded-2xl card-dark flex items-center justify-center mx-auto md:mx-0 relative z-10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="mt-6">
+            <div class="text-[10px] font-mono text-rust-500 mb-1.5 tracking-widest">STATION 01</div>
+            <div class="text-[17px] font-medium tracking-tight mb-2">Drop the work order</div>
+            <div class="text-[13px] text-paper-200/70 leading-relaxed">A link to your half-built Lovable project, a screen recording, or a 15-minute call. Like handing a spec sheet to the front office.</div>
+          </div>
+        </div>
+
+        <!-- stage 02 -->
+        <div>
+          <div class="w-20 h-20 rounded-2xl card-dark flex items-center justify-center mx-auto md:mx-0 relative z-10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13"/>
+              <line x1="9" y1="17" x2="15" y2="17"/>
+            </svg>
+          </div>
+          <div class="mt-6">
+            <div class="text-[10px] font-mono text-rust-500 mb-1.5 tracking-widest">STATION 02</div>
+            <div class="text-[17px] font-medium tracking-tight mb-2">Foreman draws the blueprint</div>
+            <div class="text-[13px] text-paper-200/70 leading-relaxed">A project manager watches your video and turns it into a real spec. Any questions come by email. You don't sit in a meeting.</div>
+          </div>
+        </div>
+
+        <!-- stage 03 -->
+        <div>
+          <div class="w-20 h-20 rounded-2xl card-dark flex items-center justify-center mx-auto md:mx-0 relative z-10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <div class="mt-6">
+            <div class="text-[10px] font-mono text-rust-500 mb-1.5 tracking-widest">STATION 03</div>
+            <div class="text-[17px] font-medium tracking-tight mb-2">Builder takes the bench</div>
+            <div class="text-[13px] text-paper-200/70 leading-relaxed">A builder we trust picks up the blueprint and starts the job. Watch the live link any time. Clock runs at $50 an hour on the line.</div>
+          </div>
+        </div>
+
+        <!-- stage 04 -->
+        <div>
+          <div class="w-20 h-20 rounded-2xl card-dark flex items-center justify-center mx-auto md:mx-0 relative z-10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+          </div>
+          <div class="mt-6">
+            <div class="text-[10px] font-mono text-rust-500 mb-1.5 tracking-widest">STATION 04</div>
+            <div class="text-[17px] font-medium tracking-tight mb-2">You walk the site</div>
+            <div class="text-[13px] text-paper-200/70 leading-relaxed">Open the live link when you have a minute. Record a walkthrough with your punch list. We keep fixing until you sign off.</div>
+          </div>
+        </div>
+
+        <!-- stage 05 -->
+        <div>
+          <div class="w-20 h-20 rounded-2xl card-dark flex items-center justify-center mx-auto md:mx-0 relative z-10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+            </svg>
+          </div>
+          <div class="mt-6">
+            <div class="text-[10px] font-mono text-rust-500 mb-1.5 tracking-widest">STATION 05</div>
+            <div class="text-[17px] font-medium tracking-tight mb-2">We hand you the keys</div>
+            <div class="text-[13px] text-paper-200/70 leading-relaxed">Your project stays on our factory floor forever. We handle backups, errors, and the boring server stuff. You get a link to share with your crew.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-24 pt-12 border-t border-paper-50/10 reveal delay-3">
+      <blockquote class="max-w-[52ch]">
+        <p class="font-serif italic text-[26px] lg:text-[36px] leading-[1.18] text-paper-100">
+          "Every owner who comes to us sees what's possible at their company. Nobody else there does. They don't need another AI tutorial. They need someone to finish the build and keep it running Monday morning."
+        </p>
+        <div class="mt-7 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rust-500 to-rust-700 flex items-center justify-center text-paper-50 text-[11px] font-mono font-bold">KB</div>
+          <div>
+            <div class="text-[13px] font-medium">Kayvon Bina</div>
+            <div class="text-[10px] font-mono uppercase tracking-widest text-paper-200/60">Cofounder · Sagan</div>
+          </div>
+        </div>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHAT YOU GET BENTO ============================ -->
+<section id="factory" class="py-24 md:py-36">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="mb-16 max-w-[36ch] reveal">
+      <div class="text-[10px] font-mono uppercase tracking-widest text-ink-500 mb-5">What rolls off the floor</div>
+      <h2 class="display text-[44px] lg:text-[68px] leading-[0.92] font-medium">
+        The finished job,<br>
+        <span class="font-serif italic font-normal">not the homework.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4 lg:gap-5">
+
+      <!-- CARD: Hosting -->
+      <div class="md:col-span-4 card rounded-[28px] p-8 lg:p-10 relative overflow-hidden min-h-[360px] reveal delay-1">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-3">Benefit 01</div>
+        <h3 class="text-[28px] lg:text-[36px] font-medium tracking-tight leading-[1.02] mb-3 display">
+          Your team can actually<br>
+          use the thing.
+        </h3>
+        <p class="text-[14px] text-ink-600 max-w-[50ch] leading-relaxed">
+          Your agent runs on our factory floor, 24/7. Your crew logs in Monday morning and it just works. No "the server is down" emails from the ops shift. That's our problem now, not yours.
+        </p>
+
+        <div class="mt-8 flex gap-2.5 flex-wrap">
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-1">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">permit-filer.sagan</span>
+          </div>
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">quote-intake.sagan</span>
+          </div>
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">crm-nightly.sagan</span>
+          </div>
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-1">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">inbox-triage.sagan</span>
+          </div>
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">sop-scraper.sagan</span>
+          </div>
+          <div class="px-3 py-2 rounded-lg border border-ink-950/10 bg-paper-100 flex items-center gap-2 float-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 breathe"></div>
+            <span class="font-mono text-[11px] text-ink-700">ar-dunning.sagan</span>
+          </div>
+        </div>
+
+        <div class="absolute bottom-8 right-8 text-right hidden lg:block">
+          <div class="text-[32px] font-mono font-medium tracking-tight text-ink-950">99.2<span class="text-ink-400">%</span></div>
+          <div class="text-[10px] font-mono uppercase tracking-widest text-ink-500">Line uptime · 90 days</div>
+        </div>
+      </div>
+
+      <!-- CARD: PM -->
+      <div class="md:col-span-2 card rounded-[28px] p-8 min-h-[360px] relative flex flex-col reveal delay-2">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-3">Benefit 02</div>
+        <h3 class="text-[22px] lg:text-[26px] font-medium tracking-tight leading-[1.1] mb-3 display">
+          You don't write <span class="font-serif italic">a plan.</span>
+        </h3>
+        <p class="text-[13px] text-ink-600 leading-relaxed">
+          Record a walkthrough of what you want. Our foreman turns it into a real blueprint. One job at a time. Not a wish list of fifteen things nobody can finish.
+        </p>
+
+        <div class="mt-auto pt-6 font-mono text-[11px] space-y-2">
+          <div class="flex gap-2 text-ink-500">
+            <span class="text-rust-500">YOU</span>
+            <span>"do all the CRM stuff"</span>
+          </div>
+          <div class="flex gap-2 text-ink-950">
+            <span class="text-rust-500">US</span>
+            <span>email digest every day at 7am</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD: Dev marketplace -->
+      <div class="md:col-span-3 card rounded-[28px] p-8 min-h-[300px] relative flex flex-col reveal delay-1">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-3">Benefit 03</div>
+        <h3 class="text-[22px] lg:text-[26px] font-medium tracking-tight leading-[1.1] mb-3 display">
+          Somebody else<br>writes the code.
+        </h3>
+        <p class="text-[13px] text-ink-600 leading-relaxed mb-6 max-w-[42ch]">
+          Real builders pick up your blueprint and run the job. We vet them, hire them, and run the line. You approve the work and pay by the hour.
+        </p>
+
+        <div class="mt-auto">
+          <div class="flex -space-x-2 mb-4">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rust-400 to-rust-600 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono font-bold tracking-wider">BK</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono font-bold tracking-wider">TS</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-sky-700 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono font-bold tracking-wider">AO</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono font-bold tracking-wider">MV</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono font-bold tracking-wider">DJ</div>
+            <div class="w-10 h-10 rounded-full bg-ink-950 border-2 border-paper-50 flex items-center justify-center text-paper-50 text-[10px] font-mono">+47</div>
+          </div>
+          <div class="flex items-center gap-4 text-[11px] font-mono text-ink-500">
+            <div><span class="text-ink-950 font-medium">$50</span>/hour</div>
+            <div class="w-1 h-1 rounded-full bg-ink-400"></div>
+            <div><span class="text-ink-950 font-medium">52</span> builders on the bench</div>
+            <div class="w-1 h-1 rounded-full bg-ink-400"></div>
+            <div><span class="text-ink-950 font-medium">4.7</span> avg rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD: Review -->
+      <div class="md:col-span-3 card rounded-[28px] p-8 min-h-[300px] relative flex flex-col reveal delay-2">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-3">Benefit 04</div>
+        <h3 class="text-[22px] lg:text-[26px] font-medium tracking-tight leading-[1.1] mb-3 display">
+          No meetings. <span class="font-serif italic">(Unless you want to talk.)</span>
+        </h3>
+        <p class="text-[13px] text-ink-600 leading-relaxed mb-6 max-w-[42ch]">
+          Walk the live site when you can. Record a punch list. We keep fixing until you sign off. No calls. No Slack at 9pm.
+        </p>
+
+        <div class="mt-auto space-y-2 font-mono text-[11px]">
+          <div class="flex items-center gap-2.5">
+            <div class="w-1 h-1 rounded-full bg-rust-500"></div>
+            <span class="text-ink-950">builder delivers build 3</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-1 h-1 rounded-full bg-rust-500"></div>
+            <span class="text-ink-600">you: "fix the mobile view, rest looks good"</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-1 h-1 rounded-full bg-rust-500"></div>
+            <span class="text-ink-950">builder delivers build 4</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-1 h-1 rounded-full bg-emerald-500 breathe"></div>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span class="text-emerald-700 font-medium">signed off · line live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ REAL AGENTS. REAL BUSINESSES. ============================ -->
+<section id="real" class="py-24 md:py-36 bg-paper-50 border-t border-ink-950/10 relative overflow-hidden">
+  <!-- ambient grid -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background-image: linear-gradient(to right, #041f21 1px, transparent 1px), linear-gradient(to bottom, #041f21 1px, transparent 1px); background-size: 80px 80px;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+
+    <!-- Header -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-8 mb-20 reveal">
+      <div class="lg:col-span-7">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-5">Now on the line</div>
+        <h2 class="display text-[44px] lg:text-[76px] leading-[0.9] font-medium max-w-[14ch]">
+          Real agents.<br>
+          <span class="font-serif italic font-normal">Real businesses.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-5 lg:pt-10">
+        <p class="text-[16px] text-ink-700 leading-relaxed max-w-[44ch]">
+          A few jobs rolling off the floor right now. Names changed. Numbers real. The kind of small, ugly problems no software company would touch and no $20,000 dev shop could ship in a month.
+        </p>
+      </div>
+    </div>
+
+    <!-- Stacked work orders -->
+    <div class="space-y-6">
+
+      <!-- ============ JOB 01 · SOURCING ============ -->
+      <div class="rounded-[28px] p-8 lg:p-12 bg-white border border-ink-950/10 reveal relative" style="box-shadow: 0 20px 40px -20px rgba(4,31,33,0.06);">
+        <div class="absolute -top-3 -right-3 bg-rust-500 text-paper-50 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_12px_28px_-8px_rgba(240,180,41,0.45)] z-10">
+          shipped
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-12">
+          <div class="lg:col-span-3 flex lg:flex-col items-center lg:items-start gap-5 lg:gap-3">
+            <div class="font-mono text-[10px] uppercase tracking-widest text-rust-500">Job 01 · Pricing</div>
+            <div class="font-mono text-[64px] lg:text-[88px] text-ink-200 leading-none font-medium">01</div>
+          </div>
+          <div class="lg:col-span-9">
+            <h3 class="display text-[26px] lg:text-[34px] leading-[1.08] font-medium mb-2 max-w-[28ch]">
+              A packaging shop tracking <span class="font-serif italic">fifty-plus vendors</span> and thousands of SKUs.
+            </h3>
+            <div class="text-[12px] font-mono uppercase tracking-widest text-ink-500 mb-7">Custom packaging · Midwest</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-ink-400 mb-2">The pain</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Vendor price changes lived in inboxes, PDFs, and spreadsheets. Costs went up. Quotes didn't. Margins bled out for months before anyone caught it.</p>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-2">The agent</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Watches the pricing inbox. Reads every supplier email: plain text, HTML tables, PDF attachments. Logs every SKU change. Flags spikes and surfaces margin risk before it eats the quarter.</p>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-5 border-t border-ink-950/10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono">
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rust-500"></div><span class="text-ink-700 uppercase tracking-widest">shipped</span></div>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">supplier-prices.sagan</span>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">50+ vendors watched</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ JOB 02 · MARKETING ============ -->
+      <div class="rounded-[28px] p-8 lg:p-12 bg-white border border-ink-950/10 reveal delay-1 relative" style="box-shadow: 0 20px 40px -20px rgba(4,31,33,0.06);">
+        <div class="absolute -top-3 -right-3 bg-rust-500 text-paper-50 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_12px_28px_-8px_rgba(240,180,41,0.45)] z-10">
+          shipped
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-12">
+          <div class="lg:col-span-3 flex lg:flex-col items-center lg:items-start gap-5 lg:gap-3">
+            <div class="font-mono text-[10px] uppercase tracking-widest text-rust-500">Job 02 · Marketing</div>
+            <div class="font-mono text-[64px] lg:text-[88px] text-ink-200 leading-none font-medium">02</div>
+          </div>
+          <div class="lg:col-span-9">
+            <h3 class="display text-[26px] lg:text-[34px] leading-[1.08] font-medium mb-2 max-w-[28ch]">
+              A permanent-lighting installer in the <span class="font-serif italic">desert southwest.</span>
+            </h3>
+            <div class="text-[12px] font-mono uppercase tracking-widest text-ink-500 mb-7">Exterior lighting · Subscription</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-ink-400 mb-2">The pain</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Homeowners couldn't picture what permanent lights would look like on their own roofline. Sales calls stalled. Direct-mail postcards used stock photos that looked nothing like the actual house.</p>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-2">The agent</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Takes a photo of any house. Renders it with the lights installed five ways: security, warm white, holiday, red-white-blue, multicolor. Batches a thousand addresses overnight. Exports straight to the postcard mailer.</p>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-5 border-t border-ink-950/10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono">
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rust-500"></div><span class="text-ink-700 uppercase tracking-widest">shipped</span></div>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">lighting-visualizer.sagan</span>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">1,000 addresses / batch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ JOB 03 · REPORTING ============ -->
+      <div class="rounded-[28px] p-8 lg:p-12 bg-white border border-ink-950/10 reveal delay-2 relative" style="box-shadow: 0 20px 40px -20px rgba(4,31,33,0.06);">
+        <div class="absolute -top-3 -right-3 bg-rust-500 text-paper-50 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_12px_28px_-8px_rgba(240,180,41,0.45)] z-10">
+          shipped
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-12">
+          <div class="lg:col-span-3 flex lg:flex-col items-center lg:items-start gap-5 lg:gap-3">
+            <div class="font-mono text-[10px] uppercase tracking-widest text-rust-500">Job 03 · Retention</div>
+            <div class="font-mono text-[64px] lg:text-[88px] text-ink-200 leading-none font-medium">03</div>
+          </div>
+          <div class="lg:col-span-9">
+            <h3 class="display text-[26px] lg:text-[34px] leading-[1.08] font-medium mb-2 max-w-[28ch]">
+              A bookkeeper losing clients because three PDFs <span class="font-serif italic">don't build a relationship.</span>
+            </h3>
+            <div class="text-[12px] font-mono uppercase tracking-widest text-ink-500 mb-7">Bookkeeping · Churn problem</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-ink-400 mb-2">The pain</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Bookkeeping is a relationship business. Owners want to be told their numbers, not handed a PDF. But walking every client through their books each month is a part-time job nobody pays for. So most bookkeepers send the three statements and hope nothing breaks. Most things break.</p>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-2">The agent</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">We cloned his voice. The agent picks up each client's books and records a personal walkthrough that sounds exactly like him. Variances flagged. Numbers highlighted. He stops living on Zoom.</p>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-5 border-t border-ink-950/10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono">
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rust-500"></div><span class="text-ink-700 uppercase tracking-widest">shipped</span></div>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">voice-walkthrough.sagan</span>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">voice cloned</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ JOB 04 · SOURCING ============ -->
+      <div class="rounded-[28px] p-8 lg:p-12 bg-white border border-ink-950/10 reveal delay-3 relative" style="box-shadow: 0 20px 40px -20px rgba(4,31,33,0.06);">
+        <div class="absolute -top-3 -right-3 bg-rust-500 text-paper-50 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_12px_28px_-8px_rgba(240,180,41,0.45)] z-10">
+          shipped
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-12">
+          <div class="lg:col-span-3 flex lg:flex-col items-center lg:items-start gap-5 lg:gap-3">
+            <div class="font-mono text-[10px] uppercase tracking-widest text-rust-500">Job 04 · Sourcing</div>
+            <div class="font-mono text-[64px] lg:text-[88px] text-ink-200 leading-none font-medium">04</div>
+          </div>
+          <div class="lg:col-span-9">
+            <h3 class="display text-[26px] lg:text-[34px] leading-[1.08] font-medium mb-2 max-w-[28ch]">
+              A custom home builder on a Caribbean island where <span class="font-serif italic">every nail gets imported.</span>
+            </h3>
+            <div class="text-[12px] font-mono uppercase tracking-widest text-ink-500 mb-7">Custom home building · Cayman</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-ink-400 mb-2">The pain</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Every job is a one-off custom home. Every home needs hundreds of materials sourced from off-island suppliers. Pricing, lead times, alternatives. All scattered across catalogs and emails. The research alone used to swallow the start of every project.</p>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-2">The agent</div>
+                <p class="text-[14px] text-ink-700 leading-relaxed">Takes the materials list for a new home. Searches across the supplier catalog. Pulls live prices and lead times. Hands the team a ranked package they can quote from on day one, not week three.</p>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-5 border-t border-ink-950/10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono">
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rust-500"></div><span class="text-ink-700 uppercase tracking-widest">shipped</span></div>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">materials-research.sagan</span>
+              <span class="text-ink-300">·</span>
+              <span class="text-ink-500">deployed on railway</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer note -->
+    <div class="mt-16 flex items-center gap-3 text-[12px] text-ink-500 reveal">
+      <div class="w-6 h-px bg-ink-950/20"></div>
+      <span class="font-mono uppercase tracking-widest">Four of fifty-two builds currently on the floor</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ WHO IT'S FOR ============================ -->
+<section id="for" class="py-24 md:py-36 bg-paper-100">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-20">
+
+      <!-- FOR -->
+      <div class="reveal">
+        <div class="flex items-center gap-2.5 mb-6">
+          <div class="w-5 h-5 rounded-full bg-rust-500 flex items-center justify-center">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ede9e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-rust-600">Built for you</span>
+        </div>
+        <h3 class="display text-[40px] lg:text-[56px] leading-[0.92] font-medium mb-10">
+          Owners who already<br>
+          <span class="font-serif italic font-normal">run a real business.</span>
+        </h3>
+        <ul class="space-y-0">
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-rust-500 shrink-0 pt-1.5 tracking-widest">01</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-950 mb-1.5">You run a business with trucks, tools, or timesheets</div>
+              <div class="text-[13px] text-ink-600 leading-relaxed">Roofing, CPA firms, landscaping, HVAC, boilers, sprinklers. You already know how to run a real business. You just need someone to build the AI agents for it.</div>
+            </div>
+          </li>
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-rust-500 shrink-0 pt-1.5 tracking-widest">02</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-950 mb-1.5">You speak punch list, walkthrough, and sign-off</div>
+              <div class="text-[13px] text-ink-600 leading-relaxed">You've already tried to build something in Lovable or Claude Code. You got 70% of the way there. You just don't have time to finish the job between tax season, a job site, and your kid's soccer game.</div>
+            </div>
+          </li>
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-rust-500 shrink-0 pt-1.5 tracking-widest">03</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-950 mb-1.5">You want one thing that works, not a Swiss Army knife</div>
+              <div class="text-[13px] text-ink-600 leading-relaxed">We build one job at a time. You bring the business sense. We bring the blueprint, the builders, and the floor.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- NOT FOR -->
+      <div class="reveal delay-2">
+        <div class="flex items-center gap-2.5 mb-6">
+          <div class="w-5 h-5 rounded-full border border-ink-400 flex items-center justify-center">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-ink-500">Not for you</span>
+        </div>
+        <h3 class="display text-[40px] lg:text-[56px] leading-[0.92] font-medium text-ink-700 mb-10">
+          Everybody else.<br>
+          <span class="font-serif italic font-normal text-ink-500">No hard feelings.</span>
+        </h3>
+        <ul class="space-y-0">
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-ink-400 shrink-0 pt-1.5 tracking-widest">01</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-700 mb-1.5">If you've taken venture funding</div>
+              <div class="text-[13px] text-ink-500 leading-relaxed">Or you work out of a WeWork. We probably aren't for you. We build for owners running real businesses with trucks, tools, and timesheets. Not founders pitching at demo day.</div>
+            </div>
+          </li>
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-ink-400 shrink-0 pt-1.5 tracking-widest">02</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-700 mb-1.5">Big companies with procurement teams and legal reviews</div>
+              <div class="text-[13px] text-ink-500 leading-relaxed">We don't do RFPs or compliance paperwork. Call a big consulting firm. You'll be happier.</div>
+            </div>
+          </li>
+          <li class="flex gap-5 py-6 border-t border-ink-950/15">
+            <div class="font-mono text-[10px] text-ink-400 shrink-0 pt-1.5 tracking-widest">03</div>
+            <div>
+              <div class="text-[16px] font-medium text-ink-700 mb-1.5">People looking for a $49 toy</div>
+              <div class="text-[13px] text-ink-500 leading-relaxed">Lovable and Replit are great starting points. Come back when you hit the wall on the last 20%.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PRICING ============================ -->
+<section id="pricing" class="py-24 md:py-36">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+    <!-- Header -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-8 mb-16">
+      <div class="lg:col-span-7 reveal">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-ink-500 mb-5">Pricing</div>
+        <h2 class="display text-[44px] lg:text-[76px] leading-[0.9] font-medium max-w-[14ch]">
+          Usage based.<br>
+          <span class="font-serif italic font-normal">Pay as you go.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-5 lg:pt-12 reveal delay-1">
+        <p class="text-[16px] text-ink-700 leading-relaxed max-w-[44ch]">
+          No seats. No lock-in. No retainers. The factory bills for the time it takes to build your job. Nothing more.
+        </p>
+      </div>
+    </div>
+
+    <!-- Rate card (full width, dark, simple) -->
+    <div class="rounded-[36px] bg-ink-950 text-paper-50 p-10 lg:p-16 relative overflow-hidden reveal delay-2">
+      <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background-image:linear-gradient(#ede9e5 1px,transparent 1px),linear-gradient(90deg,#ede9e5 1px,transparent 1px);background-size:32px 32px;"></div>
+
+      <div class="relative">
+        <div class="flex items-baseline justify-between mb-10 flex-wrap gap-4">
+          <div class="text-[10px] font-mono uppercase tracking-widest text-paper-300">Rate card</div>
+          <div class="text-[10px] font-mono uppercase tracking-widest text-paper-300/60">Effective Apr 2026</div>
+        </div>
+
+        <!-- Plain English headline -->
+        <div class="mb-10 pb-10 border-b border-paper-50/15 flex items-start gap-4 max-w-3xl">
+          <div class="w-1.5 h-1.5 rounded-full bg-rust-500 shrink-0 mt-[11px]"></div>
+          <div class="text-paper-200 text-[15px] lg:text-[17px] font-sans italic leading-relaxed">
+            Most of our agents use <span class="text-paper-50 not-italic font-medium">less than $100 a month</span>.
+          </div>
+        </div>
+
+        <div class="space-y-0 font-mono text-[14px] max-w-3xl">
+          <div class="flex justify-between items-baseline gap-6 py-6 border-b border-paper-50/15">
+            <div class="text-paper-200">AI models</div>
+            <div class="text-paper-50 font-medium text-[16px] lg:text-[18px] shrink-0 text-right">$10 – $60 / million output tokens</div>
+          </div>
+          <div class="flex justify-between items-baseline gap-6 py-6 border-b border-paper-50/15">
+            <div class="text-paper-200">AI engineering</div>
+            <div class="text-paper-50 font-medium text-[16px] lg:text-[18px] shrink-0 text-right">$50 / hour</div>
+          </div>
+          <div class="flex justify-between items-baseline gap-6 py-6 border-b border-paper-50/15">
+            <div class="text-paper-200">Hosting &amp; app infrastructure</div>
+            <div class="text-paper-50 font-medium text-[16px] lg:text-[18px] shrink-0 text-right">from $0.05 / day per active app</div>
+          </div>
+          <div class="flex justify-between items-baseline gap-6 py-6 border-b border-paper-50/15">
+            <div class="text-paper-200">Data APIs</div>
+            <div class="text-paper-50 font-medium text-[16px] lg:text-[18px] shrink-0 text-right">cost + 8%</div>
+          </div>
+        </div>
+
+        <!-- Full rate card disclosure -->
+        <details class="rate-details mt-10 max-w-3xl">
+          <summary class="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-paper-300 hover:text-paper-50 transition-colors">
+            <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <span class="summary-label-closed">Show the full rate card</span>
+            <span class="summary-label-open">Hide the full rate card</span>
+          </summary>
+          <div class="details-body mt-10 space-y-10">
+
+            <!-- AI models -->
+            <div>
+              <div class="flex items-baseline justify-between gap-6 mb-4 pb-3 border-b border-paper-50/15 flex-wrap">
+                <div class="text-paper-50 font-mono text-[12px] uppercase tracking-widest">AI models</div>
+                <div class="text-paper-300 font-mono text-[11px]">per million output tokens</div>
+              </div>
+              <div class="text-paper-300 text-[13px] font-sans leading-relaxed mb-5">
+                Rates reflect the capability tier the work requires. Our engineering — the routing, the prompt design, the fine-tuning — is what keeps the tiers affordable.
+              </div>
+              <ul class="space-y-4 text-[13px] font-sans text-paper-200">
+                <li class="flex items-start gap-4">
+                  <div class="shrink-0 w-[62px] text-paper-50 font-mono text-[14px] font-medium">$10</div>
+                  <div class="leading-relaxed"><span class="text-paper-50">Routine agent work.</span> Structured output, templated writing, tool-calling, most day-to-day tasks. When the job needs a competent, fast worker.</div>
+                </li>
+                <li class="flex items-start gap-4">
+                  <div class="shrink-0 w-[62px] text-paper-50 font-mono text-[14px] font-medium">$60</div>
+                  <div class="leading-relaxed"><span class="text-paper-50">Frontier work.</span> Complex reasoning, nuanced judgment, long-context synthesis. When the job needs the senior brain.</div>
+                </li>
+              </ul>
+              <div class="text-paper-300/70 text-[12px] font-sans leading-relaxed mt-6">
+                Input tokens run roughly 20% of output rates. Image, audio, and deep-reasoning output billed separately by tier.
+              </div>
+            </div>
+
+            <!-- Hosting & app infrastructure -->
+            <div>
+              <div class="flex items-baseline justify-between gap-6 mb-4 pb-3 border-b border-paper-50/15 flex-wrap">
+                <div class="text-paper-50 font-mono text-[12px] uppercase tracking-widest">Hosting &amp; app infrastructure</div>
+                <div class="text-paper-300 font-mono text-[11px]">from $0.05 / day per active app</div>
+              </div>
+              <div class="text-paper-300 text-[13px] font-sans leading-relaxed mb-4">
+                Per-second metered. Idle apps don't bill. Starts at $0.05 / day for a single active app and scales with actual use across five sub-meters:
+              </div>
+              <ul class="space-y-2 text-[13px] font-sans text-paper-200">
+                <li class="flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-paper-300/60 shrink-0"></div>CPU time <span class="text-paper-300/70">(per-second compute)</span></li>
+                <li class="flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-paper-300/60 shrink-0"></div>Database storage <span class="text-paper-300/70">(GB / month)</span></li>
+                <li class="flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-paper-300/60 shrink-0"></div>Object storage <span class="text-paper-300/70">(GB / month)</span></li>
+                <li class="flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-paper-300/60 shrink-0"></div>Workflow runs &amp; scheduled jobs</li>
+                <li class="flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-paper-300/60 shrink-0"></div>Integration proxies <span class="text-paper-300/70">(per call)</span></li>
+              </ul>
+            </div>
+
+            <!-- Data APIs -->
+            <div>
+              <div class="flex items-baseline justify-between gap-6 mb-4 pb-3 border-b border-paper-50/15 flex-wrap">
+                <div class="text-paper-50 font-mono text-[12px] uppercase tracking-widest">Data APIs</div>
+                <div class="text-paper-300 font-mono text-[11px]">cost + 8%</div>
+              </div>
+              <div class="text-paper-300 text-[13px] font-sans leading-relaxed">
+                Web search, enrichment, geocoding, financial data, SMS, voice. We pass wholesale through at cost + 8%. Our volume discounts on the back end usually mean the effective rate is lower than what you'd pay signing up direct.
+              </div>
+            </div>
+
+          </div>
+        </details>
+
+        <!-- Member gate -->
+        <div class="mt-12 pt-8 border-t border-paper-50/15 flex flex-wrap items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-rust-500 breathe shrink-0"></div>
+            <div>
+              <div class="text-[10px] font-mono uppercase tracking-widest text-paper-300 mb-1.5">Members only</div>
+              <div class="text-[15px] text-paper-50 font-medium">Available exclusively to Sagan Members.</div>
+            </div>
+          </div>
+          <a href="https://saganpassport.com" target="_blank" rel="noopener" class="btn inline-flex items-center gap-2 bg-rust-500 hover:bg-rust-600 text-paper-50 px-6 h-12 rounded-full text-[14px] font-medium">
+            Join today at saganpassport.com
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================ -->
+<section id="start" class="py-24 md:py-40 bg-ink-950 text-paper-50 relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none opacity-[0.035]" style="background-image:linear-gradient(#ede9e5 1px,transparent 1px),linear-gradient(90deg,#ede9e5 1px,transparent 1px);background-size:80px 80px;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-14 items-end">
+      <div class="reveal">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-6">Ready?</div>
+        <h2 class="display text-[60px] sm:text-[88px] lg:text-[120px] leading-[0.84] font-medium">
+          Dangerously<br>
+          <span class="font-serif italic font-normal">skip permissions.</span>
+        </h2>
+        <p class="mt-10 text-[19px] text-paper-200 max-w-[54ch] leading-relaxed">
+          Stop fighting the database at 2am. Drop the work order on our floor. We'll build it, test it, and keep it running for your crew.
+        </p>
+      </div>
+      <div class="flex flex-col gap-3 w-full max-w-md reveal delay-2">
+        <a href="#waitlist" data-open-waitlist class="btn inline-flex items-center justify-between bg-rust-500 text-paper-50 px-6 h-14 rounded-full text-[15px] font-medium hover:bg-rust-600">
+          <span>Join the waitlist</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <div class="mt-5 text-[12px] font-mono text-paper-300 leading-relaxed border-t border-paper-50/10 pt-5">
+          You need a Sagan Membership to put jobs on the line. We only take owners who run a real business and are serious about shipping.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="py-12 border-t border-ink-950/10 bg-paper-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-center justify-between flex-wrap gap-6">
+      <div class="flex items-center gap-2.5">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEVMaXEJOj4WZI4JOz8JOj4hmP8JOj4IPEAJOj4JOj4hl/8JPEAhl/8JOj8hl/8gmP8JOz8hl/8JOkAhl/8JOj4hl/+U+0IzAAAAFHRSTlMA7xDPZ8aGIJ/fmEXmr3Qov0AwYKDDniQAAAAJcEhZcwAACxMAAAsTAQCanBgAAAJdSURBVHjatVfnmoMgEAy9Kxbe/1XP0OSiKMS7/ZPkizvONth5vSrGMDVIrJsJa6hiry5T1LuWhqhq9YZH72ACsyZ3sFZN0FsIXLgDZPhmFoGSxQ0ASs685DtjnsMS1ySYf5s9SZjiCfuaBF5XXnkHSxC04ho+rvLETEDg59F/UBsHKYnWhMhh/Ewyggf/jR6Y95+T1K4wLadEQpxzoD7BCXci7mBkiY2CzvKAS9jxxN1DjJnsZvhYPBR+DNrVbCiaBZTJFnsAULoLk+EZ/7z9CCAgQuIujcCdcQ4iJBa3+CeE8EpYVsD4r9LdmvQP2qISgYAPYHAN5jPJCgo4V3Bs8Xd6zLWkewk8AdIE4EimIPyYZgKLa7QpZ0GlFKoOApGCSjGgRGVyrosCCI4sRyDbAWROIwtMfBPpdgCdq4dDCubmGkYbUx3o631IgeYm+tVMwDewTXMsewBkmmrk28h2FTEX0vgy5CL0A/gy7AC6B0D/B8C3IYh0mMhuAOuTiJ6W8XEj0XScdLfyHFoZPxsm9XycfRnANweKiOl/fKSpfM81U1hyBOovjvUQQ7hYdHMNA4FwvULw7dWWVka63/bNl6sp1xwIvrve95316YIR77neFUdUl6z6CFSXrMdrXqxE3mCXs0Vzulo0E2xObHXVjQk4rtsRuBAD27JN3su2LJftODzobF2PasDcyiK6clj5I6qBquCgv5TFheLiZ5LHpvG9Uky7tOJ4LmUsD9jgXvaJUvbZt+wzpewzt8KT1XSrh6SwQbsyXJO+Te5RfKOjd7P4jjxUlv/I0Lrs/gFI279CltbATQAAAABJRU5ErkJggg==" alt="Sagan" class="w-5 h-5" width="20" height="20">
+        <span class="font-medium text-[13px]">Sagan</span>
+        <span class="text-[10px] font-mono text-ink-500 uppercase tracking-widest ml-2">© 2026 · AI Agents for the Businesses Fueling America</span>
+      </div>
+      <div class="flex items-center gap-8 text-[12px] text-ink-600">
+        <a href="#" class="hover:text-ink-950 transition-colors">Podcast</a>
+        <a href="#" class="hover:text-ink-950 transition-colors">Newsletter</a>
+        <a href="#" class="hover:text-ink-950 transition-colors">Members</a>
+        <a href="#" class="hover:text-ink-950 transition-colors">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================ SCRIPTS ============================ -->
+<script>
+  // Typewriter in hero status card
+  (function(){
+    const el = document.getElementById('typewriter');
+    if (!el) return;
+    const phrases = [
+      'the ServiceTitan webhook',
+      'the address lookup',
+      'the municipal portal',
+      'the PDF handoff',
+      'the confirmation receipt'
+    ];
+    let pi = 0, ci = 0, deleting = false;
+    function tick() {
+      const p = phrases[pi];
+      if (!deleting) {
+        ci++;
+        el.textContent = p.slice(0, ci);
+        if (ci === p.length) { deleting = true; setTimeout(tick, 1800); return; }
+        setTimeout(tick, 42);
+      } else {
+        ci--;
+        el.textContent = p.slice(0, ci);
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 260); return; }
+        setTimeout(tick, 22);
+      }
+    }
+    tick();
+  })();
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Waitlist modal — wait for DOM since modal markup lives below this script
+  document.addEventListener('DOMContentLoaded', function(){
+    const modal     = document.getElementById('waitlist-modal');
+    const form      = document.getElementById('waitlist-form');
+    if (!modal || !form) return;
+    const errorEl   = modal.querySelector('[data-waitlist-error]');
+    const successEl = modal.querySelector('[data-waitlist-success]');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitLbl = submitBtn.querySelector('[data-submit-label]');
+
+    function open() {
+      modal.classList.add('is-open');
+      document.body.classList.add('wl-locked');
+      setTimeout(() => {
+        const first = form.querySelector('input, select, textarea');
+        if (first) first.focus();
+      }, 80);
+    }
+    function close() {
+      modal.classList.remove('is-open');
+      document.body.classList.remove('wl-locked');
+    }
+
+    document.querySelectorAll('[data-open-waitlist]').forEach(el => {
+      el.addEventListener('click', e => { e.preventDefault(); open(); });
+    });
+    modal.querySelectorAll('[data-waitlist-close]').forEach(el => {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+    });
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitLbl.textContent = 'Submitting…';
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      try {
+        const res = await fetch('https://api.sheetninja.io/a0585ed2169f41afbc5ecfdc613228cd/aiAgentWaitlist/sheet1', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}));
+          throw new Error(errBody.message || `Request failed (${res.status})`);
+        }
+        form.classList.add('hidden');
+        successEl.classList.remove('hidden');
+      } catch (err) {
+        errorEl.textContent = err.message || 'Something went wrong. Try again.';
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitLbl.textContent = 'Get on the waitlist';
+      }
+    });
+  });
+</script>
+
+<!-- ============================ WAITLIST MODAL ============================ -->
+<div id="waitlist-modal" class="waitlist-modal" aria-hidden="true" role="dialog" aria-labelledby="waitlist-title">
+  <div class="backdrop" data-waitlist-close></div>
+  <div class="panel">
+    <button type="button" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-ink-950/5 hover:bg-ink-950/10 flex items-center justify-center text-ink-950 transition-colors" data-waitlist-close aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="p-8 lg:p-10">
+      <div class="text-[10px] font-mono uppercase tracking-widest text-rust-500 mb-3">Waitlist</div>
+      <h3 id="waitlist-title" class="display text-[32px] lg:text-[38px] font-medium leading-[1.02] mb-3">
+        Get on <span class="font-serif italic font-normal">the line.</span>
+      </h3>
+      <p class="text-[14px] text-ink-600 leading-relaxed mb-7 max-w-[44ch]">
+        Tell us what you want to build. We'll reach out when your spot on the floor opens up.
+      </p>
+
+      <form id="waitlist-form" class="space-y-4">
+        <div>
+          <label class="wl-label" for="wl-name">Name</label>
+          <input id="wl-name" class="wl-input" type="text" name="name" required autocomplete="name">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="wl-label" for="wl-email">Email</label>
+            <input id="wl-email" class="wl-input" type="email" name="email" required autocomplete="email">
+          </div>
+          <div>
+            <label class="wl-label" for="wl-phone">Phone</label>
+            <input id="wl-phone" class="wl-input" type="tel" name="phone" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div>
+          <label class="wl-label" for="wl-website">Company website</label>
+          <input id="wl-website" class="wl-input" type="text" name="companyWebsite" placeholder="yourcompany.com" required autocomplete="url">
+        </div>
+
+        <div>
+          <label class="wl-label" for="wl-customer">Are you a Sagan customer?</label>
+          <select id="wl-customer" class="wl-select" name="isSaganCustomer" required>
+            <option value="">Select…</option>
+            <option value="Yes">Yes</option>
+            <option value="No, not yet">No, not yet</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="wl-label" for="wl-agent">One-line description of the AI agent you want to build</label>
+          <textarea id="wl-agent" class="wl-textarea" name="agentDescription" rows="3" required placeholder="e.g. Watches our pricing inbox and flags vendor price spikes."></textarea>
+        </div>
+
+        <button type="submit" class="btn w-full h-12 bg-ink-950 hover:bg-ink-900 text-paper-50 rounded-full text-[14px] font-medium flex items-center justify-center gap-2 mt-2 disabled:opacity-60 disabled:cursor-not-allowed">
+          <span data-submit-label>Get on the waitlist</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <div data-waitlist-error class="hidden text-[12px] font-mono text-rust-600 leading-relaxed pt-1"></div>
+
+        <div class="text-[11px] font-mono text-ink-500 leading-relaxed pt-2">
+          No spam. We only reach out when there's something to say.
+        </div>
+      </form>
+
+      <div data-waitlist-success class="hidden text-center py-8">
+        <div class="w-14 h-14 mx-auto rounded-full bg-rust-500/10 flex items-center justify-center mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5b801" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4 class="display text-[28px] font-medium leading-tight mb-2">
+          You're on <span class="font-serif italic font-normal">the line.</span>
+        </h4>
+        <p class="text-[14px] text-ink-600 max-w-[36ch] mx-auto">
+          We'll be in touch as soon as a slot opens on the factory floor.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
